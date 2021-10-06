@@ -6,19 +6,21 @@ client = discord.Client()
 game = False
 curr_letter = ""
 
+
+def load_data(f, data_list):
+    data = open(f)
+    for d in data:
+        data_list.append(d.strip())
+        data_list.append(d.strip().lower())
+
+
 # Load animals data
-animals = open("animals.txt")
 animals_list = []
-for animal in animals:
-    animals_list.append(animal.strip())
-    animals_list.append(animal.strip().lower())
+load_data("animals.txt", animals_list)
 
 # Load countries data
-countries = open("countries")
 countries_list = []
-for country in countries:
-    countries_list.append(country.strip())
-    countries_list.append(country.strip().lower())
+load_data("countries", countries_list)
 
 
 @client.event
@@ -38,6 +40,11 @@ async def on_message(message):
         global curr_letter
         answer = message.content.split(", ")
 
+        if message.content.startswith('!'):
+            if message.content == "!q":
+                game = False
+                await message.channel.send("Game ended!")
+                return
         # Check if formatting is correct
         if len(answer) != 4:
             await message.channel.send(message.author.name + ", "
@@ -71,8 +78,9 @@ async def on_message(message):
 
         if message.content == "!rules":
             await message.channel.send("When the game starts, give a Name, "
-                                       "Animal, Country, Movie/TV Show, in"
-                                       "order and separated by commas. ")
+                                       "Animal, Country, Movie/TV Show, in "
+                                       "order and separated by commas. To "
+                                       "quit the game, type !q. ")
 
         if message.content == "!game":
             game = True
