@@ -10,17 +10,28 @@ curr_letter = ""
 def load_data(f, data_list):
     data = open(f)
     for d in data:
-        data_list.append(d.strip())
         data_list.append(d.strip().lower())
 
+
+# Load female names
+f_name_list = []
+load_data("female.txt", f_name_list)
+
+# Load male names
+m_name_list = []
+load_data("male.txt", m_name_list)
+
+# Load movies data
+movies_list = []
+load_data("movies.txt", movies_list)
 
 # Load animals data
 animals_list = []
 load_data("animals.txt", animals_list)
 
-# Load countries data
+# Load countries.txt data
 countries_list = []
-load_data("countries", countries_list)
+load_data("countries.txt", countries_list)
 
 
 @client.event
@@ -46,41 +57,68 @@ async def on_message(message):
                 await message.channel.send("Game ended!")
                 return
         # Check if formatting is correct
-        if len(answer) != 4:
+        if len(answer) != 5:
             await message.channel.send(message.author.name + ", "
-                                       "incorrect answer!")
+                                       "invalid answer! "
+                                       "(There should be 5 elements)")
             return
 
         # Check if first letters are correct
         for a in answer:
             if (a[0] != curr_letter) and (a[0] != curr_letter.upper()):
                 await message.channel.send(message.author.name + ", "
-                                           "incorrect answer!")
+                                           "invalid answer! ")
                 return
 
-        # Check if Animal is correct
-        if answer[1] not in animals_list:
+        # Check if Boy Name is correct
+        if answer[0].lower() not in m_name_list:
             await message.channel.send(message.author.name + ", "
-                                       "incorrect answer!")
+                                       "incorrect boy name!")
+            return
+
+        # Check if Boy Name is correct
+        if answer[1].lower() not in f_name_list:
+            await message.channel.send(message.author.name + ", "
+                                       "incorrect girl name!")
+            return
+
+        # Check if Animal is correct
+        if answer[2].lower() not in animals_list:
+            await message.channel.send(message.author.name + ", "
+                                       "incorrect animal!")
             return
 
         # Check if Country is correct
-        if answer[2] not in countries_list:
+        if answer[3].lower() not in countries_list:
             await message.channel.send(message.author.name + ", "
-                                       "incorrect answer!")
+                                       "incorrect country!")
+            return
+
+        # Check if Movie is correct
+        if answer[4].lower() not in movies_list:
+            await message.channel.send(message.author.name + ", "
+                                       "incorrect movie!")
             return
 
         await message.channel.send(message.author.name + " is the winner! "
-                                   ":trophy:")
+                                                         ":trophy:")
         game = False
 
     if message.content.startswith('!'):
-
         if message.content == "!rules":
-            await message.channel.send("When the game starts, give a Name, "
-                                       "Animal, Country, Movie/TV Show, in "
-                                       "order and separated by commas. To "
-                                       "quit the game, type !q. ")
+            await message.channel.send(" When the game starts, a random "
+                                       "letter will be chosen. \n Give a "
+                                       "**Boy Name**, "
+                                       "**Girl Name**, "
+                                       "**Animal**, **Country**, **Movie**, "
+                                       "that start with that letter, in "
+                                       "this order, and separated by commas. \n"
+                                       " "
+                                       "The first player to get these wins! \n"
+                                       " \n To "
+                                       "start a "
+                                       "game, type `!game` \n To " 
+                                       "quit the game, type `!q`")
 
         if message.content == "!game":
             game = True
@@ -94,4 +132,3 @@ secret_f = open("secret")
 secret = secret_f.readline()
 
 client.run(secret)
-
