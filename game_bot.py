@@ -15,23 +15,23 @@ def load_data(f, data_list):
 
 # Load female names
 f_name_list = []
-load_data("female.txt", f_name_list)
+load_data("datasets/female.txt", f_name_list)
 
 # Load male names
 m_name_list = []
-load_data("male.txt", m_name_list)
+load_data("datasets/male.txt", m_name_list)
 
 # Load movies data
 movies_list = []
-load_data("movies.txt", movies_list)
+load_data("datasets/movies.txt", movies_list)
 
 # Load animals data
 animals_list = []
-load_data("animals.txt", animals_list)
+load_data("datasets/animals.txt", animals_list)
 
 # Load countries.txt data
 countries_list = []
-load_data("countries.txt", countries_list)
+load_data("datasets/countries.txt", countries_list)
 
 
 @client.event
