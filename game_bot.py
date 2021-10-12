@@ -37,6 +37,8 @@ load_data("datasets/countries.txt", countries_list)
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
+    await client.get_channel(862420155488272416).send("Bot is online!\n "
+                                                      "Type `!rules` for info.")
 
 
 @client.event
@@ -58,50 +60,51 @@ async def on_message(message):
                 return
         # Check if formatting is correct
         if len(answer) != 5:
-            await message.channel.send(message.author.name + ", "
+            await message.channel.send(message.author.mention + ", "
                                        "invalid answer! "
-                                       "(There should be 5 elements)")
+                                       "*There should be 5 elements*")
             return
 
         # Check if first letters are correct
         for a in answer:
             if (a[0] != curr_letter) and (a[0] != curr_letter.upper()):
-                await message.channel.send(message.author.name + ", "
-                                           "invalid answer! ")
+                await message.channel.send(message.author.mention + ", "
+                                           "invalid answer! *Check "
+                                           "your first letters*")
                 return
 
         # Check if Boy Name is correct
         if answer[0].lower() not in m_name_list:
-            await message.channel.send(message.author.name + ", "
+            await message.channel.send(message.author.mention + ", "
                                        "incorrect boy name!")
             return
 
         # Check if Boy Name is correct
         if answer[1].lower() not in f_name_list:
-            await message.channel.send(message.author.name + ", "
+            await message.channel.send(message.author.mention + ", "
                                        "incorrect girl name!")
             return
 
         # Check if Animal is correct
         if answer[2].lower() not in animals_list:
-            await message.channel.send(message.author.name + ", "
+            await message.channel.send(message.author.mention + ", "
                                        "incorrect animal!")
             return
 
         # Check if Country is correct
         if answer[3].lower() not in countries_list:
-            await message.channel.send(message.author.name + ", "
+            await message.channel.send(message.author.mention + ", "
                                        "incorrect country!")
             return
 
         # Check if Movie is correct
         if answer[4].lower() not in movies_list:
-            await message.channel.send(message.author.name + ", "
+            await message.channel.send(message.author.mention + ", "
                                        "incorrect movie!")
             return
 
-        await message.channel.send(message.author.name + " is the winner! "
-                                                         ":trophy:")
+        await message.channel.send(message.author.mention + " is the winner! "
+                                                            ":trophy:")
         game = False
 
     if message.content.startswith('!'):
